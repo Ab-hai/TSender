@@ -4,10 +4,19 @@ export interface InputFormProps {
     value?: string
     type?: string
     large?: boolean
-    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    onChange?: (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void
 }
 
-export function InputForm({ label, placeholder, value, type, large, onChange }: InputFormProps) {
+export function InputForm({
+    label,
+    placeholder,
+    value,
+    type,
+    large,
+    onChange,
+}: InputFormProps) {
     return (
         <div className="flex flex-col gap-1.5">
             <label className="text-zinc-600 font-medium text-sm">{label}</label>
