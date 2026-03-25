@@ -14,6 +14,7 @@ export default function AirdropForm() {
     const chainId = useChainId()
     const config = useConfig()
     const account = useAccount()
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const { data: hash, isPending, writeContractAsync } = useWriteContract()
 
     const total: number = useMemo(() => calculateTotal(amounts), [amounts])
@@ -35,53 +36,61 @@ export default function AirdropForm() {
     }
 
     async function handleSubmit() {
-        const tSenderAddress = chainsToTSender[chainId]['tsender']
-        const approvedAmount = await getApprovedAmount(tSenderAddress)
-        if (approvedAmount < total) {
-            const approvalHah = await writeContractAsync({
-                abi: erc20Abi,
-                address: tokenAddress as `0x${string}`,
-                functionName: 'approve',
-                args: [tSenderAddress as `0x${string}`, BigInt(total)],
-            })
-            const approvalReceipt = await waitForTransactionReceipt(config, {
-                hash: approvalHah,
-            })
-            await writeContractAsync({
-                abi: tsenderAbi,
-                address: tSenderAddress as `0x${string}`,
-                functionName: 'airdropERC20',
-                args: [
-                    tokenAddress,
-                    recipients
-                        .split(/[,\n]+/)
-                        .map((addr) => addr.trim())
-                        .filter((addr) => addr !== ''),
-                    amounts
-                        .split(/[,\n]+/)
-                        .map((amt) => amt.trim())
-                        .filter((amt) => amt !== ''),
-                    BigInt(total),
-                ],
-            })
-        } else {
-            await writeContractAsync({
-                abi: tsenderAbi,
-                address: tSenderAddress as `0x${string}`,
-                functionName: 'airdropERC20',
-                args: [
-                    tokenAddress,
-                    recipients
-                        .split(/[,\n]+/)
-                        .map((addr) => addr.trim())
-                        .filter((addr) => addr !== ''),
-                    amounts
-                        .split(/[,\n]+/)
-                        .map((amt) => amt.trim())
-                        .filter((amt) => amt !== ''),
-                    BigInt(total),
-                ],
-            })
+        setIsSubmitting(true)
+        try {
+            const tSenderAddress = chainsToTSender[chainId]['tsender']
+            const approvedAmount = await getApprovedAmount(tSenderAddress)
+            if (approvedAmount < total) {
+                const approvalHash = await writeContractAsync({
+                    abi: erc20Abi,
+                    address: tokenAddress as `0x${string}`,
+                    functionName: 'approve',
+                    args: [tSenderAddress as `0x${string}`, BigInt(total)],
+                })
+                const approvalReceipt = await waitForTransactionReceipt(
+                    config,
+                    {
+                        hash: approvalHash,
+                    }
+                )
+                await writeContractAsync({
+                    abi: tsenderAbi,
+                    address: tSenderAddress as `0x${string}`,
+                    functionName: 'airdropERC20',
+                    args: [
+                        tokenAddress,
+                        recipients
+                            .split(/[,\n]+/)
+                            .map((addr) => addr.trim())
+                            .filter((addr) => addr !== ''),
+                        amounts
+                            .split(/[,\n]+/)
+                            .map((amt) => amt.trim())
+                            .filter((amt) => amt !== ''),
+                        BigInt(total),
+                    ],
+                })
+            } else {
+                await writeContractAsync({
+                    abi: tsenderAbi,
+                    address: tSenderAddress as `0x${string}`,
+                    functionName: 'airdropERC20',
+                    args: [
+                        tokenAddress,
+                        recipients
+                            .split(/[,\n]+/)
+                            .map((addr) => addr.trim())
+                            .filter((addr) => addr !== ''),
+                        amounts
+                            .split(/[,\n]+/)
+                            .map((amt) => amt.trim())
+                            .filter((amt) => amt !== ''),
+                        BigInt(total),
+                    ],
+                })
+            }
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -108,12 +117,34 @@ export default function AirdropForm() {
                 onChange={(e) => setAmounts(e.target.value)}
                 large={true}
             />
-
             <button
                 onClick={handleSubmit}
-                className="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition duration-150"
+                disabled={isSubmitting}
+                className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg shadow-md transition duration-150"
             >
-                Send Transaction
+                {isPending && (
+                    <svg
+                        className="animate-spin h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                        />
+                        <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8z"
+                        />
+                    </svg>
+                )}
+                {isPending ? 'Sending...' : 'Send Transaction'}
             </button>
         </div>
     )
