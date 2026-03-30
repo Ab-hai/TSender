@@ -32,7 +32,7 @@ export default function Header() {
                 The most gas efficient airdrop contract on earth, built in huff
                 🐎
             </h3>
-            <div className="flex items-center gap-4">
+            <div>
                 <ConnectButton />
             </div>
         </nav>

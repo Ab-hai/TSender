@@ -1,27 +1,20 @@
 "use client"
 
-import HomeContent from "@/components/HomeContetnt"
-import { useAccount } from "wagmi"
+import { useState, useEffect } from 'react'
+import { useAccount } from 'wagmi'
+import AirdropForm from '@/components/AirdropForm'
 
 export default function Home() {
+  const { isConnected } = useAccount()
+  const [mounted, setMounted] = useState(false)
 
- const {isConnected} = useAccount()
-    
-    return (
-        <div>
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) return null 
+
+  return (
     <div>
-        { isConnected ? (
-                 <div>
-            <HomeContent />
-        </div>
-        ) : (
-           
-            <div>
-                Please connect a wallet..
-                </div>
-        )
-    }
+      {isConnected ? <AirdropForm /> : <div>Please connect a wallet..</div>}
     </div>
-        </div>
-    )
+  )
 }
