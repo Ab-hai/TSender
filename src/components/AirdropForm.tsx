@@ -95,8 +95,9 @@ export default function AirdropForm() {
     }
 
     return (
-        <div>
-            <InputForm
+         <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950 p-4">
+        <div className="w-full max-w-2xl bg-white dark:bg-gray-950 border border-black dark:border-blue-600 rounded-2xl shadow-sm p-7 flex flex-col gap-6">
+            <InputForm 
                 label="Token Address"
                 placeholder="0x"
                 value={tokenAddress}
@@ -109,7 +110,6 @@ export default function AirdropForm() {
                 onChange={(e) => setRecipients(e.target.value)}
                 large={true}
             />
-
             <InputForm
                 label="Amount"
                 placeholder="100"
@@ -123,29 +123,14 @@ export default function AirdropForm() {
                 className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg shadow-md transition duration-150"
             >
                 {isPending && (
-                    <svg
-                        className="animate-spin h-4 w-4 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                        />
-                        <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8v8z"
-                        />
+                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                     </svg>
                 )}
                 {isPending ? 'Sending...' : 'Send Transaction'}
             </button>
         </div>
+    </div>
     )
 }
