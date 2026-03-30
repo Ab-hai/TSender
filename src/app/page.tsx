@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <div>
-      {isConnected ? <AirdropForm /> : <div>Please connect a wallet..</div>}
+      {isConnected ? <AirdropForm /> : <div className="flex items-center justify-center min-h-screen">Please connect a wallet..</div>}
     </div>
   )
 }

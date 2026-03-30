@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: { children: ReactNode }) {
     return (
-        <html lang="en">
-            <body>
+        <html lang="en" suppressHydrationWarning>
+            <body className="bg-white dark:bg-gray-950 text-black dark:text-white">
                 <Providers>
                     <Header />
                     {props.children}

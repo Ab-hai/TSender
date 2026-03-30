@@ -19,17 +19,17 @@ export function InputForm({
 }: InputFormProps) {
     return (
         <div className="flex flex-col gap-1.5">
-            <label className="text-zinc-600 font-medium text-sm">{label}</label>
+            <label className="text-zinc-600 dark:text-zinc-300 font-medium text-sm">{label}</label>
             {large ? (
                 <textarea
-                    className={`bg-white py-2 px-3 border border-zinc-300 placeholder:text-zinc-500 text-zinc-900 shadow-xs rounded-lg focus:ring-[4px] focus:ring-zinc-400/15 focus:outline-none h-24 align-text-top`}
+                    className={`bg-white dark:bg-gray-800 py-2 px-3 border border-zinc-300 dark:border-zinc-600 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 text-zinc-900  dark:text-zinc-100 shadow-xs rounded-lg focus:ring-[4px] focus:ring-zinc-400/15 focus:outline-none h-24 align-text-top`}
                     placeholder={placeholder}
                     value={value || ''}
                     onChange={onChange}
                 />
             ) : (
                 <input
-                    className={`bg-white py-2 px-3 border border-zinc-300 placeholder:text-zinc-500 text-zinc-900 shadow-xs rounded-lg focus:ring-[4px] focus:ring-zinc-400/15 focus:outline-none`}
+                    className={`bg-white dark:bg-gray-800 py-2 px-3 border border-zinc-300 dark:border-zinc-600 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100 shadow-xs rounded-lg focus:ring-[4px] focus:ring-zinc-400/15 focus:outline-none`}
                     type={type}
                     placeholder={placeholder}
                     value={value || ''}
