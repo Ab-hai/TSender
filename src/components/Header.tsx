@@ -14,7 +14,7 @@ export default function Header() {
   if (!mounted) return null
 
     return (
-        <nav className="px-8 py-4.5 border-b-[1px] border-zinc-100 dark:border-zinc-800 flex flex-row justify-between items-center bg-white dark:bg-gray-900 xl:min-h-[77px]">
+        <nav className=" relative px-8 py-4.5 border-b-[1px] border-zinc-100 dark:border-zinc-800 flex flex-row justify-between items-center bg-white dark:bg-gray-900 xl:min-h-[77px]">
             <div className="flex items-center gap-2.5 md:gap-6">
                 <a href="/" className="flex items-center gap-1 text-zinc-800 dark:text-zinc-100">
                     <Image
@@ -36,7 +36,7 @@ export default function Header() {
                     <FaGithub className="h-5 w-5 text-white" />
                 </a>
             </div>
-            <h3 className="italic text-left hidden text-zinc-500 dark:text-zinc-400 lg:block">
+            <h3 className="absolute left-1/2 -translate-x-1/2 italic text-left hidden text-zinc-500 dark:text-zinc-400 lg:block">
                 The most gas efficient airdrop contract on earth, built in huff
                 🐎
             </h3>

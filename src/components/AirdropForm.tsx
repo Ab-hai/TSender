@@ -6,6 +6,10 @@ import { chainsToTSender, tsenderAbi, erc20Abi } from '@/constants'
 import { useChainId, useConfig, useAccount, useWriteContract } from 'wagmi'
 import { readContract, waitForTransactionReceipt } from '@wagmi/core'
 import { calculateTotal } from '@/utils/calculateTotal/calculateTotal'
+import { StatefulButton } from './ui/StatefulButton'
+import TransactionDetails from './ui/TransactionDetails'
+
+type TxStep = 'idle' | 'approving' | 'sending' | 'success'
 
 export default function AirdropForm() {
     const [tokenAddress, setTokenAddress] = useState('')
@@ -14,10 +18,14 @@ export default function AirdropForm() {
     const chainId = useChainId()
     const config = useConfig()
     const account = useAccount()
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [txStep, setTxStep] = useState<TxStep>('idle')
     const { data: hash, isPending, writeContractAsync } = useWriteContract()
 
     const total: number = useMemo(() => calculateTotal(amounts), [amounts])
+    const recipientList = recipients.split(/[\n,]+/).map(r => r.trim()).filter(Boolean)
+    const recipientCount = recipientList.length
+
+
 
     async function getApprovedAmount(
         tSenderAddress: string | null
@@ -36,11 +44,12 @@ export default function AirdropForm() {
     }
 
     async function handleSubmit() {
-        setIsSubmitting(true)
+        setTxStep('idle')
         try {
             const tSenderAddress = chainsToTSender[chainId]['tsender']
             const approvedAmount = await getApprovedAmount(tSenderAddress)
             if (approvedAmount < total) {
+                setTxStep('approving')
                 const approvalHash = await writeContractAsync({
                     abi: erc20Abi,
                     address: tokenAddress as `0x${string}`,
@@ -53,6 +62,7 @@ export default function AirdropForm() {
                         hash: approvalHash,
                     }
                 )
+                setTxStep('sending')
                 await writeContractAsync({
                     abi: tsenderAbi,
                     address: tSenderAddress as `0x${string}`,
@@ -71,6 +81,7 @@ export default function AirdropForm() {
                     ],
                 })
             } else {
+                setTxStep('sending')
                 await writeContractAsync({
                     abi: tsenderAbi,
                     address: tSenderAddress as `0x${string}`,
@@ -89,8 +100,12 @@ export default function AirdropForm() {
                     ],
                 })
             }
-        } finally {
-            setIsSubmitting(false)
+        setTxStep('success')
+        setTimeout(() => setTxStep('idle'), 3000)
+        }
+        catch(err) {
+            console.error(err)
+            setTxStep('idle')
         }
     }
 
@@ -104,32 +119,21 @@ export default function AirdropForm() {
                 onChange={(e) => setTokenAddress(e.target.value)}
             />
             <InputForm
-                label="Recipients"
-                placeholder="0x9595386..."
+                label="Recipients (comma or new line separated)"
+                placeholder="0x959..,0x334.."
                 value={recipients}
                 onChange={(e) => setRecipients(e.target.value)}
                 large={true}
             />
             <InputForm
-                label="Amount"
-                placeholder="100"
+                label="Amount (wei; comma or new line separated)"
+                placeholder="100,200,300.."
                 value={amounts}
                 onChange={(e) => setAmounts(e.target.value)}
                 large={true}
             />
-            <button
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg shadow-md transition duration-150"
-            >
-                {isPending && (
-                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                    </svg>
-                )}
-                {isPending ? 'Sending...' : 'Send Transaction'}
-            </button>
+        <TransactionDetails recipientCount={recipientCount} total={total} />
+           <StatefulButton txStep={txStep} onClick={handleSubmit} />
         </div>
     </div>
     )
