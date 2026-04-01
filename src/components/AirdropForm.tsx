@@ -22,10 +22,11 @@ export default function AirdropForm() {
     const { data: hash, isPending, writeContractAsync } = useWriteContract()
 
     const total: number = useMemo(() => calculateTotal(amounts), [amounts])
-    const recipientList = recipients.split(/[\n,]+/).map(r => r.trim()).filter(Boolean)
+    const recipientList = recipients
+        .split(/[\n,]+/)
+        .map((r) => r.trim())
+        .filter(Boolean)
     const recipientCount = recipientList.length
-
-
 
     async function getApprovedAmount(
         tSenderAddress: string | null
@@ -100,41 +101,43 @@ export default function AirdropForm() {
                     ],
                 })
             }
-        setTxStep('success')
-        setTimeout(() => setTxStep('idle'), 3000)
-        }
-        catch(err) {
+            setTxStep('success')
+            setTimeout(() => setTxStep('idle'), 3000)
+        } catch (err) {
             console.error(err)
             setTxStep('idle')
         }
     }
 
     return (
-         <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950 p-4">
-        <div className="w-full max-w-2xl bg-white dark:bg-gray-950 border border-black dark:border-blue-600 rounded-2xl shadow-sm p-7 flex flex-col gap-6">
-            <InputForm 
-                label="Token Address"
-                placeholder="0x"
-                value={tokenAddress}
-                onChange={(e) => setTokenAddress(e.target.value)}
-            />
-            <InputForm
-                label="Recipients (comma or new line separated)"
-                placeholder="0x959..,0x334.."
-                value={recipients}
-                onChange={(e) => setRecipients(e.target.value)}
-                large={true}
-            />
-            <InputForm
-                label="Amount (wei; comma or new line separated)"
-                placeholder="100,200,300.."
-                value={amounts}
-                onChange={(e) => setAmounts(e.target.value)}
-                large={true}
-            />
-        <TransactionDetails recipientCount={recipientCount} total={total} />
-           <StatefulButton txStep={txStep} onClick={handleSubmit} />
+        <div className="flex items-start justify-center pt-7 bg-white dark:bg-gray-950">
+            <div className="w-full max-w-2xl bg-white dark:bg-gray-950 border border-black dark:border-blue-600 rounded-2xl shadow-sm p-7 flex flex-col gap-6">
+                <InputForm
+                    label="Token Address"
+                    placeholder="0x"
+                    value={tokenAddress}
+                    onChange={(e) => setTokenAddress(e.target.value)}
+                />
+                <InputForm
+                    label="Recipients (comma or new line separated)"
+                    placeholder="0x959..,0x334.."
+                    value={recipients}
+                    onChange={(e) => setRecipients(e.target.value)}
+                    large={true}
+                />
+                <InputForm
+                    label="Amount (wei; comma or new line separated)"
+                    placeholder="100,200,300.."
+                    value={amounts}
+                    onChange={(e) => setAmounts(e.target.value)}
+                    large={true}
+                />
+                <TransactionDetails
+                    recipientCount={recipientCount}
+                    total={total}
+                />
+                <StatefulButton txStep={txStep} onClick={handleSubmit} />
+            </div>
         </div>
-    </div>
     )
 }

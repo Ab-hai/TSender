@@ -3,20 +3,22 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { FaGithub } from 'react-icons/fa'
 import Image from 'next/image'
-import { useState , useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { ThemeSwitch } from './ui/theme-switch-button'
 
 export default function Header() {
+    const [mounted, setMounted] = useState(false)
 
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => setMounted(true), [])
-  if (!mounted) return null
+    useEffect(() => setMounted(true), [])
+    if (!mounted) return null
 
     return (
         <nav className=" relative px-8 py-4.5 border-b-[1px] border-zinc-100 dark:border-zinc-800 flex flex-row justify-between items-center bg-white dark:bg-gray-900 xl:min-h-[77px]">
             <div className="flex items-center gap-2.5 md:gap-6">
-                <a href="/" className="flex items-center gap-1 text-zinc-800 dark:text-zinc-100">
+                <a
+                    href="/"
+                    className="flex items-center gap-1 text-zinc-800 dark:text-zinc-100"
+                >
                     <Image
                         src="/T-Sender.svg"
                         alt="TSender"
@@ -40,10 +42,10 @@ export default function Header() {
                 The most gas efficient airdrop contract on earth, built in huff
                 🐎
             </h3>
-        <div className='flex items-center gap-4'>
-        <ThemeSwitch className="cursor-pointer p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition" />
-        <ConnectButton />
-        </div>
+            <div className="flex items-center gap-4">
+                <ThemeSwitch className="cursor-pointer p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition" />
+                <ConnectButton />
+            </div>
         </nav>
     )
 }

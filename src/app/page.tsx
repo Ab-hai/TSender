@@ -1,20 +1,26 @@
-"use client"
+'use client'
 
 import { useState, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import AirdropForm from '@/components/AirdropForm'
 
 export default function Home() {
-  const { isConnected } = useAccount()
-  const [mounted, setMounted] = useState(false)
+    const { isConnected } = useAccount()
+    const [mounted, setMounted] = useState(false)
 
-  useEffect(() => setMounted(true), [])
+    useEffect(() => setMounted(true), [])
 
-  if (!mounted) return null 
+    if (!mounted) return null
 
-  return (
-    <div>
-      {isConnected ? <AirdropForm /> : <div className="flex items-center justify-center min-h-screen">Please connect a wallet..</div>}
-    </div>
-  )
+    return (
+        <div>
+            {isConnected ? (
+                <AirdropForm />
+            ) : (
+                <div className="flex items-center justify-center min-h-screen">
+                    Please connect a wallet..
+                </div>
+            )}
+        </div>
+    )
 }

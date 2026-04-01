@@ -9,11 +9,18 @@ interface StatefulButtonProps {
     onClick: () => void
 }
 
-const stepConfig: Record<TxStep, { label: string; showSpinner: boolean; showCheck: boolean }> = {
-    idle:      { label: 'Send Transaction', showSpinner: false, showCheck: false },
-    approving: { label: 'Approving...',     showSpinner: true,  showCheck: false },
-    sending:   { label: 'Sending Airdrop...', showSpinner: true, showCheck: false },
-    success:   { label: 'Done!',            showSpinner: false, showCheck: true  },
+const stepConfig: Record<
+    TxStep,
+    { label: string; showSpinner: boolean; showCheck: boolean }
+> = {
+    idle: { label: 'Send Transaction', showSpinner: false, showCheck: false },
+    approving: { label: 'Approving...', showSpinner: true, showCheck: false },
+    sending: {
+        label: 'Sending Airdrop...',
+        showSpinner: true,
+        showCheck: false,
+    },
+    success: { label: 'Done!', showSpinner: false, showCheck: true },
 }
 
 export function StatefulButton({ txStep, onClick }: StatefulButtonProps) {
@@ -29,9 +36,11 @@ export function StatefulButton({ txStep, onClick }: StatefulButtonProps) {
                 relative flex items-center justify-center gap-2 w-full
                 px-6 py-2.5 rounded-lg font-semibold text-white text-sm
                 shadow-md transition-colors duration-200 overflow-hidden
-                ${txStep === 'success'
-                    ? 'bg-green-600'
-                    : 'bg-blue-600 hover:bg-blue-700'}
+                ${
+                    txStep === 'success'
+                        ? 'bg-green-600'
+                        : 'bg-blue-600 hover:bg-blue-700'
+                }
                 disabled:cursor-not-allowed disabled:opacity-80
             `}
         >
@@ -40,7 +49,11 @@ export function StatefulButton({ txStep, onClick }: StatefulButtonProps) {
                 <motion.span
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
                     animate={{ x: ['-100%', '100%'] }}
-                    transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
+                    transition={{
+                        repeat: Infinity,
+                        duration: 1.2,
+                        ease: 'linear',
+                    }}
                 />
             )}
 
@@ -54,8 +67,19 @@ export function StatefulButton({ txStep, onClick }: StatefulButtonProps) {
                     fill="none"
                     viewBox="0 0 24 24"
                 >
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                    <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                    />
+                    <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8z"
+                    />
                 </motion.svg>
             )}
 
@@ -71,7 +95,11 @@ export function StatefulButton({ txStep, onClick }: StatefulButtonProps) {
                     stroke="currentColor"
                     strokeWidth={3}
                 >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                    />
                 </motion.svg>
             )}
 

@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 TSender
 
-## Getting Started
+**TSender** is a hyper gas-efficient smart contract-based application designed to airdrop tokens to a large number of users in a secure and optimized way.
 
-First, run the development server:
+It ensures correctness, safety, and efficiency when distributing tokens by validating inputs and minimizing unnecessary gas costs.
+
+---
+
+## ✨ Features
+
+### ✅ Core Validations
+
+TSender ensures safe and reliable token distribution by enforcing the following checks:
+
+- Verifies that `totalAmount` matches the sum of all values in the `amounts` array
+- Prevents sending ETH along with function calls
+- Ensures `recipients.length === amounts.length`
+- Rejects transactions with zero address recipients
+
+---
+
+### ⚡ Gas-Optimized Validation
+
+To save gas, additional validations are handled through a separate helper function:
+
+#### `areListsValid(address[] recipients, uint256[] amounts)`
+
+This function checks:
+
+- No duplicate addresses
+- No zero address recipients
+- At least one recipient exists
+- All amounts are greater than 0
+- `recipients.length == amounts.length`
+
+---
+
+## 🛠️ Getting Started
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/Ab-hai/TSender.git
+cd TSender
+```
+
+---
+
+### 2️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+### 3️⃣ Run the Application
+
+Start the frontend:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Run the local blockchain (Anvil):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run anvil
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📁 Project Structure (Overview)
 
-To learn more about Next.js, take a look at the following resources:
+```
+TSender/
+│── contracts/        # Smart contracts
+│── scripts/          # Deployment & scripts
+│── frontend/         # UI for interacting with contracts
+│── test/             # Tests
+│── package.json
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ⚙️ Tech Stack
 
-## Deploy on Vercel
+- Solidity (Smart Contracts)
+- Foundry / Anvil (Local Blockchain)
+- Next.js (Frontend)
+- Ethers.js / Web3 tools
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎯 Use Case
+
+TSender is ideal for:
+
+- Token airdrops
+- Bulk token transfers
+- DAO reward distributions
+- Community incentives
+
+---
+
+## 🔗 Repository
+
+GitHub:
+👉 https://github.com/Ab-hai/TSender
+
+---
+
+## 📌 Notes
+
+- Designed with **gas efficiency as a priority**
+- Separation of validation logic helps reduce on-chain costs
+- Suitable for large-scale token distribution
+
+---
+
+## 🤝 Contributing
+
+Feel free to fork the repository and submit pull requests to improve the project!
+
+---
+
+## 📄 License
+
+This project is open-source and available under the MIT License.
+
+---
+
+💡 _Built for efficient and scalable token distribution._
