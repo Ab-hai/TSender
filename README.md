@@ -19,22 +19,6 @@ TSender ensures safe and reliable token distribution by enforcing the following 
 
 ---
 
-### ⚡ Gas-Optimized Validation
-
-To save gas, additional validations are handled through a separate helper function:
-
-#### `areListsValid(address[] recipients, uint256[] amounts)`
-
-This function checks:
-
-- No duplicate addresses
-- No zero address recipients
-- At least one recipient exists
-- All amounts are greater than 0
-- `recipients.length == amounts.length`
-
----
-
 ## 🛠️ Getting Started
 
 ### 1️⃣ Clone the Repository
@@ -66,19 +50,6 @@ Run the local blockchain (Anvil):
 
 ```bash
 npm run anvil
-```
-
----
-
-## 📁 Project Structure (Overview)
-
-```
-TSender/
-│── contracts/        # Smart contracts
-│── scripts/          # Deployment & scripts
-│── frontend/         # UI for interacting with contracts
-│── test/             # Tests
-│── package.json
 ```
 
 ---
